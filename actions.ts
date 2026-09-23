@@ -1,0 +1,5 @@
+ "use server";
+import { requireAdmin } from "@/lib/auth"; import { db } from "@/lib/db"; import { redirect } from "next/navigation";
+export async function createProduct(fd:FormData){await requireAdmin();const name=String(fd.get("name")),price=Number(fd.get("price")),unit=String(fd.get("unit")||"kg"),categoryId=String(fd.get("categoryId")),description=String(fd.get("description"));const slug=name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+"-"+Date.now();await db.product.create({data:{name,slug,price,unit,categoryId,description,stock:0}});redirect("/admin/products");}
+export async function updateOrder(fd:FormData){await requireAdmin();await db.order.update({where:{id:String(fd.get("id"))},data:{status:String(fd.get("status")) as any}});redirect("/admin/orders");}
+export async function updateSell(fd:FormData){await requireAdmin();await db.sellRequest.update({where:{id:String(fd.get("id"))},data:{status:String(fd.get("status")) as any,adminNotes:String(fd.get("notes")||"")}});redirect("/admin/sells");}

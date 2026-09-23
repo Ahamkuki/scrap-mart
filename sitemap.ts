@@ -1,0 +1,2 @@
+import { MetadataRoute } from "next"; import { db } from "@/lib/db";
+export default async function sitemap():Promise<MetadataRoute.Sitemap>{const base=process.env.NEXT_PUBLIC_SITE_URL||"http://localhost:3000";const ps=await db.product.findMany({select:{slug:true,updatedAt:true}});return [{url:base,lastModified:new Date()},{url:`${base}/products`,lastModified:new Date()},{url:`${base}/sell`,lastModified:new Date()},...ps.map(p=>({url:`${base}/products/${p.slug}`,lastModified:p.updatedAt}))];}

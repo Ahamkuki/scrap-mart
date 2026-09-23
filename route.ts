@@ -1,0 +1,1 @@
+import { NextRequest,NextResponse } from "next/server"; import { whatsappUrl } from "@/lib/whatsapp"; export async function GET(req:NextRequest){return NextResponse.redirect(whatsappUrl(req.nextUrl.searchParams.get("message")||"Hello ScrapMart"));}
